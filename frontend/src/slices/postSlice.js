@@ -1,4 +1,4 @@
-import { POST_URL } from "../constants";
+import { POST_URL, UPLOAD_URL } from "../constants";
 import { apiSlice } from "./apiSlice";
 
 const postSlice = apiSlice.injectEndpoints({
@@ -46,6 +46,53 @@ const postSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags: ["Post"],
 		}),
+
+		getMyPosts: builder.query({
+			query: () => ({
+				url: `${POST_URL}/myposts`
+			}),
+			providesTags: ['Post']
+		}),
+
+		uploadPostImage: builder.mutation({
+            query: (data) => ({
+                url: UPLOAD_URL,
+                method: 'POST',
+                body: data
+            })
+		}),
+		
+		createPost: builder.mutation({
+			query: (data) => ({
+				url: `${POST_URL}/create`,
+				method: 'POST',
+				body: data
+			})
+		}),
+
+		deletePost: builder.mutation({
+			query: (id) => ({
+				url: `${POST_URL}/${id}`,
+				method: 'DELETE',
+				body: id
+			}),
+			invalidatesTags: ['Post']
+		}),
+
+		updatePost: builder.mutation({
+			query: (data) => ({
+				url: `${POST_URL}/${data.id}`,
+				method: 'PUT',
+				body: data
+			}),
+			invalidatesTags: ['Post']
+		}),
+
+		getTopPosts: builder.query({
+			query: () => ({
+				url: `${POST_URL}/top-posts`,
+			})
+		})
 	}),
 });
 
@@ -56,4 +103,10 @@ export const {
 	useGetCategoryQuery,
 	useLikePostMutation,
 	useDislikePostMutation,
+	useGetMyPostsQuery,
+	useUploadPostImageMutation,
+	useCreatePostMutation,
+	useDeletePostMutation,
+	useUpdatePostMutation, 
+	useGetTopPostsQuery
 } = postSlice;

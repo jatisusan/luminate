@@ -18,7 +18,7 @@ function Blogs({ post }) {
 								</Link>
 							</Card.Text>
 
-							<Card.Text className="post-content">{post.content}</Card.Text>
+							<Card.Text className="post-content" dangerouslySetInnerHTML={{ __html: post.content }}></Card.Text>
 							<Row>
 								<Col lg="8">
 									<Button variant="outline-primary" size="sm">

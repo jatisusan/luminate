@@ -4,10 +4,11 @@ import apiError from "../utils/apiError.js";
 
 // create new post
 const createPost = asyncHandler(async (req, res) => {
-	let { title, content, category } = req.body;
+	let { title, content, category, image } = req.body;
 	let newPost = await Post.create({
 		title,
 		content,
+		image,
 		category,
 		author: req.user._id,
 	});
@@ -18,7 +19,6 @@ const createPost = asyncHandler(async (req, res) => {
 const getPosts = asyncHandler(async (req, res) => {
 	let keyword = req.query.keyword;
 	let category = req.query.category;
-	console.log(keyword);
 	keyword = keyword
 		? {
 				$or: [
@@ -41,7 +41,7 @@ const getPosts = asyncHandler(async (req, res) => {
 		: {};
 	let posts = await Post.find(keyword ? { ...keyword } : { category }).populate(
 		[
-			{ path: "author", select: "username email" },
+			{ path: "author", select: "username email pfp" },
 			{ path: "likes", select: "username email" },
 		]
 	);
@@ -51,8 +51,8 @@ const getPosts = asyncHandler(async (req, res) => {
 
 const getPostById = asyncHandler(async (req, res) => {
 	let post = await Post.findById(req.params.postId).populate([
-		{ path: "author", select: "username email" },
-		{ path: "likes", select: "username email" },
+		{ path: "author", select: "username email pfp" },
+		{ path: "likes", select: "username email pfp" },
 	]);
 	if (!post) throw new apiError(404, "Post not found!");
 	res.send(post);
@@ -60,7 +60,7 @@ const getPostById = asyncHandler(async (req, res) => {
 
 // update my post
 const updatePost = asyncHandler(async (req, res) => {
-	let { title, content, category } = req.body;
+	let { title, content, category, image } = req.body;
 	let { postId } = req.params;
 	let post = await Post.findById(postId);
 	if (!post) throw new apiError(404, "Post not found!");
@@ -68,8 +68,12 @@ const updatePost = asyncHandler(async (req, res) => {
 		post.title = title || post.title;
 		post.content = content || post.content;
 		post.category = category || post.category;
+		post.image = image || post.image;
 		let updatedPost = await post.save();
-		res.send({ message: "Post updated", post: updatedPost });
+		res.send({
+			message: "Post updated",
+			post: updatedPost,
+		});
 	} else {
 		throw new apiError(401, "User not authorized!");
 	}
@@ -118,26 +122,23 @@ const dislikePost = asyncHandler(async (req, res) => {
 	res.send({ message: "Like removed", post: post });
 });
 
-// search post
-const searchPost = asyncHandler(async (req, res) => {
-	let { query } = req.query;
-
-	let searchCriteria = {};
-	if (query) {
-		searchCriteria.$or = [
-			{ title: { $regex: query, $options: "i" } },
-			{ content: { $regex: query, $options: "i" } },
-		];
-	}
-	let filteredPosts = await Post.find(searchCriteria);
-	res.send(filteredPosts);
+const getMyPosts = asyncHandler(async (req, res) => {
+	let user = req.user._id;
+	let myPosts = await Post.find({ author: user });
+	if (!myPosts) throw new apiError(404, "Posts not found!");
+	res.send(myPosts);
 });
 
-// get post by category
-const getPostsByCategory = asyncHandler(async (req, res) => {
-	let { category } = req.params;
-	let posts = await Post.find({ category });
-	if (!posts) throw new apiError(404, "No posts found");
+const getTopPosts = asyncHandler(async (req, res) => {
+	let posts = await Post.aggregate([
+		{
+			$addFields: {
+				likesCount: { $size: "$likes" },
+			},
+		},
+		{ $sort: { likesCount: -1 } },
+		{ $limit: 3 },
+	]);
 	res.send(posts);
 });
 
@@ -149,6 +150,6 @@ export {
 	deletePost,
 	likePost,
 	dislikePost,
-	searchPost,
-	getPostsByCategory,
+	getMyPosts,
+	getTopPosts,
 };

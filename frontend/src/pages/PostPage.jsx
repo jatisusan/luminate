@@ -24,6 +24,7 @@ import { toast } from "react-toastify";
 import { GoHeart,  GoHeartFill } from "react-icons/go";
 import { useSelector } from "react-redux";
 
+
 function PostPage() {
 	const { id } = useParams();
 
@@ -84,12 +85,9 @@ function PostPage() {
 			}
 		}
 		
-			
-		
-		
 	}, [post])
 
-
+	
 	
 	return (
 		<>
@@ -110,10 +108,10 @@ function PostPage() {
 
 								<ListGroup.Item className="py-4">
 									<Row>
-										<Col sm={1}>
-											<FaCircleUser size={25} />
+										<Col md={1} className="me-3">
+												<Image src={post.author.pfp }  className="pfp-icon"/>
 										</Col>
-										<Col md={7}>
+										<Col md={6}>
 											<strong>{post.author.username}</strong>
 											<p>{post.author.email}</p>
 										</Col>
@@ -124,7 +122,7 @@ function PostPage() {
 								</ListGroup.Item>
 
 								<ListGroup.Item>
-									<p className="postpage-p my-3">{post.content} </p>
+								<div className="postpage-p my-3" dangerouslySetInnerHTML={{ __html: post.content }} />
 								</ListGroup.Item>
 									<ListGroup.Item className="text-end ">
 										<Button size="lg" variant="Link" onClick={likeHandler}>
@@ -150,9 +148,9 @@ function PostPage() {
 									<Form onSubmit={addCommentHandler}>
 										<Row className="my-4 align-items-top">
 											<Col xs={1}>
-												<FaUserCircle size={25} className="me-2" />
+												<Image src={userInfo.pfp} className="pfp-icon" />
 											</Col>
-											<Col >
+											<Col className="ms-3">
 												<Form.Control
 														as="textarea"
 														placeholder="Add comment"

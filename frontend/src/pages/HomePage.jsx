@@ -6,11 +6,13 @@ import {
 	Button,
 	Form,
 	FormControl,
+	Card,
 } from "react-bootstrap";
-import { useGetPostsQuery } from "../slices/postSlice";
+import { useGetPostsQuery, useGetTopPostsQuery } from "../slices/postSlice";
 import { useParams, Link } from "react-router-dom";
 import SearchBar from "../components/SearchBar";
 import Message from "../components/Message";
+import Post from "../../../backend/models/post.model";
 
 function HomePage() {
 	const { category, keyword } = useParams();
@@ -20,6 +22,12 @@ function HomePage() {
 		isLoading,
 		error,
 	} = useGetPostsQuery({ category, keyword });
+
+	const {
+		data: topPosts,
+		isLoading: topPostsLoading,
+		error: topPostsError,
+	} = useGetTopPostsQuery();
 
 	return isLoading ? (
 		<h2>Loading....</h2>
@@ -54,6 +62,7 @@ function HomePage() {
 							"Finance",
 							"Programming",
 							"Entertainment",
+							"Sports",
 						].map((cat) => (
 							<Button
 								as={Link}
@@ -65,6 +74,31 @@ function HomePage() {
 								{cat}
 							</Button>
 						))}
+					</Container>
+
+						<Container className="my-4">
+							<h5 className="ms-1 border-bottom pb-2">Top Liked</h5>
+						{topPostsLoading ? (
+							<Message>Loading....</Message>
+						) : topPostsError ? (
+							<Message>{topPostsError.data.error}</Message>
+						) : (
+							topPosts.map((post) => (
+								<Card key={post._id} className="p-2 my-4">
+									<Card.Img src={post.image} />
+
+									<Card.Body>
+										<Card.Title>
+											<Link to={`/post/${post._id}`}>{post.title}</Link>
+										</Card.Title>
+										
+									</Card.Body>
+									<Card.Footer >
+											<h4>{post.likes.length} Likes</h4>
+										</Card.Footer>
+								</Card>
+							))
+						)}
 					</Container>
 				</Col>
 			</Row>

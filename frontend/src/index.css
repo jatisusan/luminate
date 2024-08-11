@@ -33,10 +33,12 @@
   display: block;
   margin-left: auto;
   margin-right: auto;
+  max-height: 70vh;
+  object-fit: cover;
 }
 
 .postpage-p{
-  font-size: larger;
+  
   text-align: justify;
 }
 
@@ -52,3 +54,37 @@
   font-style: italic;
 }
 
+
+
+.profile-pfp {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .profile-pfp {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-pfp {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+.quill-editor-container .ql-editor {
+  min-height: 400px; /* Adjust this to control the minimum height of the editing area */
+}
+
+.pfp-icon{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}

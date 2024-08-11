@@ -17,6 +17,7 @@ import { store } from "./store.js";
 import RegisterPage from "./pages/RegisterPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import BlogeditorPage from "./pages/BlogeditorPage.jsx";
+import BlogUpdatePage from "./pages/BlogUpdatePage.jsx";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -29,6 +30,7 @@ const router = createBrowserRouter(
 			<Route path="register" element={<RegisterPage />} />
 			<Route path="profile" element={<ProfilePage />} />
 			<Route path="blogeditor" element={<BlogeditorPage />} />
+			<Route path="post/:id/edit" element={<BlogUpdatePage />} />
 		</Route>
 	)
 );

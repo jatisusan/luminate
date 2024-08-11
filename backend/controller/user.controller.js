@@ -11,13 +11,16 @@ const signup = asyncHandler(async (req, res) => {
 	if (userExists)
 		throw new apiError(400, `User with email ${email} already exists!`);
 	let newUser = await User.create({ username, email, password });
+	createToken(res, newUser._id);
 	res.send({
 		message: "User registered successfully",
 		user: {
 			username: newUser.username,
 			email: newUser.email,
+			pfp: newUser.pfp
 		},
 	});
+	
 });
 
 const login = asyncHandler(async (req, res) => {
@@ -32,6 +35,7 @@ const login = asyncHandler(async (req, res) => {
 			user: {
 				username: user.username,
 				email: user.email,
+				pfp: user.pfp,
 			},
 		});
 	} else {
@@ -51,4 +55,25 @@ const getProfile = asyncHandler(async (req, res) => {
 	res.send({ user: user, posts: posts });
 });
 
-export { signup, login, logout, getProfile };
+const updateProfile = asyncHandler(async (req, res) => {
+	let user = await User.findById(req.user._id);
+	if (!user) throw new apiError(404, "User not found");
+	let { username, email, pfp } = req.body;
+	user.username = username || user.username;
+	user.email = email || user.email;
+	user.pfp = pfp || user.pfp;
+	if (req.body.password) {
+		user.password = req.body.password || user.password;
+	}
+	let updatedUser = await user.save();
+	res.send({
+		message: "User updated",
+		user: {
+			username: updatedUser.username,
+			email: updatedUser.email,
+			pfp: updatedUser.pfp,
+		},
+	});
+});
+
+export { signup, login, logout, getProfile, updateProfile };

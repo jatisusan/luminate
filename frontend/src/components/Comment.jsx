@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
 	Row,
 	Col,
+	Image,
 	ListGroup,
 	Button,
 	FormControl,
@@ -29,6 +30,7 @@ const Comment = ({ comment }) => {
 				content: reply,
 			}).unwrap();
 			toast.success(resp.message);
+			setShowReplyForm(!showReplyForm);
 		} catch (err) {
 			toast.error(err.data.error);
 		}
@@ -42,8 +44,8 @@ const Comment = ({ comment }) => {
 					</div>
 			</Row>
 			<Row className="mt-2">
-				<Col xs={2} sm={1}>
-					<FaUserCircle size={25} className="me-2" />
+				<Col xs={2} sm={2} md={2} lg={1}>
+					<Image src={comment.author.pfp } className="pfp-icon"/>
 				</Col>
 
 				<Col>
@@ -109,7 +111,7 @@ const Comment = ({ comment }) => {
 						</>
 					)}
 					{showReplies && comment.replies && (
-						<ListGroup className="ms-4 mt-3" variant="flush">
+						<ListGroup className="mt-3" variant="flush">
 							{comment.replies.map((reply) => (
 								<Comment key={reply._id} comment={reply} />
 							))}

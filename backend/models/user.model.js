@@ -15,6 +15,10 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    pfp: {
+        type: String,
+        default: "https://res.cloudinary.com/dlxajd31e/image/upload/v1723287682/blogplatform/e5yztbupisig6abiqvpb.png"
     }
 }, { timestamps: true });
 
