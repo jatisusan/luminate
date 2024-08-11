@@ -23,8 +23,11 @@ const router = createBrowserRouter(
 	createRoutesFromElements(
 		<Route path="/" element={<App />}>
 			<Route path="" element={<HomePage />} />
+			<Route path="page/:pageNumber" element={<HomePage />} />
 			<Route path="category/:category" element={<HomePage />} />
+			<Route path="category/:category/page/:pageNumber" element={<HomePage />} />
 			<Route path="search/:keyword" element={<HomePage />} />
+			<Route path="search/:keyword/page/:pageNumber" element={<HomePage />} />
 			<Route path="post/:id" element={<PostPage />} />
 			<Route path="login" element={<LoginPage />} />
 			<Route path="register" element={<RegisterPage />} />

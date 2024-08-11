@@ -95,7 +95,7 @@ function PostPage() {
 				<h1>Loading.....</h1>
 			) : (
 				<Row className="justify-content-md-center">
-					<Col md="8">
+					<Col md="10">
 						<Container>
 							<ListGroup className="my-2" variant="flush">
 								<ListGroup.Item>
@@ -111,11 +111,11 @@ function PostPage() {
 										<Col md={1} className="me-3">
 												<Image src={post.author.pfp }  className="pfp-icon"/>
 										</Col>
-										<Col md={6}>
+										<Col md={7} lg={8}>
 											<strong>{post.author.username}</strong>
 											<p>{post.author.email}</p>
 										</Col>
-										<Col md={4}>
+										<Col md={3} lg={2} >
 											Posted on: {post.createdAt.substring(0, 10)}
 										</Col>
 									</Row>
@@ -145,7 +145,8 @@ function PostPage() {
 								)}
 							<ListGroup variant="flush">
 								<ListGroup.Item>
-									<Form onSubmit={addCommentHandler}>
+										{ userInfo &&
+											(<Form onSubmit={addCommentHandler}>
 										<Row className="my-4 align-items-top">
 											<Col xs={1}>
 												<Image src={userInfo.pfp} className="pfp-icon" />
@@ -163,7 +164,7 @@ function PostPage() {
 												</Button>
 											</Col>
 										</Row>
-									</Form>
+									</Form>)}
 								</ListGroup.Item>
 								{commentsLoading ? (
 									<h2>Loading Comments</h2>

@@ -20,6 +20,7 @@ import { setCredentials } from "../slices/authSlice";
 import { useDeletePostMutation, useGetMyPostsQuery } from "../slices/postSlice";
 import Message from "../components/Message";
 import { FaTrash } from "react-icons/fa";
+import Paginate from "../components/Paginate";
 
 
 const ProfilePage = () => {
@@ -79,6 +80,7 @@ const ProfilePage = () => {
 		isLoading: mypostsLoading,
 		error: mypostsError,
 	} = useGetMyPostsQuery();
+
 
 	const [deletePost, { isLoading: deletePostLoading }] = useDeletePostMutation();
 	const deleteHandler = async (id) => {
@@ -230,6 +232,8 @@ const ProfilePage = () => {
 					)}
 				</Col>
 			</Row>
+
+		
 		</>
 	);
 };

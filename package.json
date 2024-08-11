@@ -9,7 +9,9 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "data:load": "node backend/seeder.js",
-    "data:clear": "node backend/seeder.js -d"
+    "data:clear": "node backend/seeder.js -d",
+    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
+    "start": "node backend/index.js"
   },
   "keywords": [],
   "author": "Susan Jati",

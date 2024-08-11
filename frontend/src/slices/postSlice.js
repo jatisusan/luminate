@@ -11,9 +11,9 @@ const postSlice = apiSlice.injectEndpoints({
 		}),
 
 		getPosts: builder.query({
-			query: ({category, keyword}) => ({
+			query: ({category, keyword, pageNumber}) => ({
 				url: POST_URL,
-				params: {category, keyword}
+				params: {category, keyword, pageNumber}
 			}),
 		}),
 

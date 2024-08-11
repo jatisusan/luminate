@@ -8,54 +8,61 @@ import {
 	FormLabel,
 	Row,
 	Col,
-  Button,
+	Button,
 } from "react-bootstrap";
-import { useCreatePostMutation, useUploadPostImageMutation } from "../slices/postSlice";
+import {
+	useCreatePostMutation,
+	useUploadPostImageMutation,
+} from "../slices/postSlice";
 import { toast } from "react-toastify";
-import { useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Message from "../components/Message";
 
 const BlogeditorPage = () => {
 	const [title, setTitle] = useState();
 	const [content, setContent] = useState();
 	const [image, setImage] = useState();
-  const [category, setCategory] = useState();
-  const navigate = useNavigate();
+	const [category, setCategory] = useState();
+	const navigate = useNavigate();
 
-  const [uploadPostImage, { isLoading: uploadPostImageLoading }] = useUploadPostImageMutation();
+	const [uploadPostImage, { isLoading: uploadPostImageLoading }] =
+		useUploadPostImageMutation();
 	const imageUploadHandler = async (e) => {
 		try {
 			let formData = new FormData();
 			formData.append("image", e.target.files[0]);
 			let resp = await uploadPostImage(formData).unwrap();
 			setImage(resp.filePath);
-      toast.success(resp.message);
-      
+			toast.success(resp.message);
 		} catch (err) {
 			toast.error(err.data.error);
 		}
-  };
+	};
 
-  const handleContentChange = (value) => {
-    setContent(value);
-  }
-  
-  const [createPost, { isLoading: createPostLoading }] = useCreatePostMutation();
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    try {
-      let resp = await createPost({ title, category, content, image }).unwrap();
-      toast.success(resp.message);
-      navigate(`/post/${resp.post._id}`)
+	const handleContentChange = (value) => {
+		setContent(value);
+	};
 
-    } catch (err) {
-      toast.error(err.data.error);
-    }
-  }
-  
-  
+	const [createPost, { isLoading: createPostLoading }] =
+		useCreatePostMutation();
+	const submitHandler = async (e) => {
+		e.preventDefault();
+		try {
+			let resp = await createPost({ title, category, content, image }).unwrap();
+			toast.success(resp.message);
+			navigate(`/post/${resp.post._id}`);
+		} catch (err) {
+			toast.error(err.data.error);
+		}
+	};
+
 	return (
 		<>
 			<Container className="my-3 ">
+				<Button as={Link} to="/" variant="outline-dark">
+					Go back
+				</Button>
+
 				<h2 className="my-4">Create a new blog post</h2>
 
 				<Row>
@@ -66,39 +73,52 @@ const BlogeditorPage = () => {
 								<Form.Control
 									type="text"
 									value={title}
-                  placeholder="Post Title"
-                  onChange={e => setTitle(e.target.value)}
+									placeholder="Post Title"
+									onChange={(e) => setTitle(e.target.value)}
 								/>
 							</FormGroup>
 
 							<FormGroup className="my-3" controlId="category">
 								<FormLabel>Category</FormLabel>
 								<Form.Control
-									type="text"
+									as="select"
 									value={category}
-                  placeholder="Category"
-                  onChange={e => setCategory(e.target.value)}
-								/>
+									placeholder="Category"
+									onChange={(e) => setCategory(e.target.value)}
+								>
+									<option>None</option>
+									<option>Technology</option>
+									<option>Health</option>
+									<option>Programming</option>
+									<option>Entertainment</option>
+									<option>Travel</option>
+									<option>Sports</option>
+									<option>Finance</option>
+									<option>Education</option>
+									<option>Life</option>
+								</Form.Control>
 							</FormGroup>
 
 							<FormGroup className="my-3" controlId="image">
 								<FormLabel>Image</FormLabel>
-								<Form.Control type="file" onChange={imageUploadHandler}/>
+								<Form.Control type="file" onChange={imageUploadHandler} />
 							</FormGroup>
 
 							<FormGroup className="my-3" controlId="content">
 								<FormLabel>Content</FormLabel>
 								<div className="quill-editor-container">
 									<ReactQuill
-                    value={content}
-                    onChange={handleContentChange}
+										value={content}
+										onChange={handleContentChange}
 										placeholder="Write your blog content...."
 										theme="snow"
 									/>
 								</div>
-              </FormGroup>
-              
-              <Button type="submit">Post</Button>
+							</FormGroup>
+
+							<Button type="submit" variant="warning">
+								Post
+							</Button>
 						</Form>
 					</Col>
 				</Row>

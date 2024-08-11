@@ -12,16 +12,18 @@ import { useGetPostsQuery, useGetTopPostsQuery } from "../slices/postSlice";
 import { useParams, Link } from "react-router-dom";
 import SearchBar from "../components/SearchBar";
 import Message from "../components/Message";
-import Post from "../../../backend/models/post.model";
+import { BsFire } from "react-icons/bs";
+import { FcLike } from "react-icons/fc";
+import Paginate from "../components/Paginate";
 
 function HomePage() {
-	const { category, keyword } = useParams();
+	const { category, keyword, pageNumber } = useParams();
 
-	const {
-		data: posts,
-		isLoading,
-		error,
-	} = useGetPostsQuery({ category, keyword });
+	const { data, isLoading, error } = useGetPostsQuery({
+		category,
+		keyword,
+		pageNumber,
+	});
 
 	const {
 		data: topPosts,
@@ -44,11 +46,17 @@ function HomePage() {
 							<h3>Latest</h3>
 						)}
 					</Container>
-					{posts.length > 0 ? (
-						posts.map((post) => <Blogs post={post} key={post._id} />)
+					{data.posts.length > 0 ? (
+						data.posts.map((post) => <Blogs post={post} key={post._id} />)
 					) : (
 						<Message>No posts found</Message>
 					)}
+					<Paginate
+						page={data.page}
+						pages={data.pages}
+						category={category ? category : ""}
+						keyword={keyword ? keyword : ""}
+					/>
 				</Col>
 
 				<Col>
@@ -61,8 +69,11 @@ function HomePage() {
 							"Travel",
 							"Finance",
 							"Programming",
-							"Entertainment",
-							"Sports",
+								"Entertainment",
+							"Education",
+								"Sports",
+								"Life",
+							
 						].map((cat) => (
 							<Button
 								as={Link}
@@ -76,26 +87,30 @@ function HomePage() {
 						))}
 					</Container>
 
-						<Container className="my-4">
-							<h5 className="ms-1 border-bottom pb-2">Top Liked</h5>
+					<Container className="my-4">
+						<div className="ms-1 border-bottom pb-2">
+							<BsFire style={{ color: "rgb(255, 90, 0)" }} className="me-2" />
+							<span className="fs-5 fw-bold">Top Liked</span>
+						</div>
+
 						{topPostsLoading ? (
 							<Message>Loading....</Message>
 						) : topPostsError ? (
 							<Message>{topPostsError.data.error}</Message>
 						) : (
 							topPosts.map((post) => (
-								<Card key={post._id} className="p-2 my-4">
+								<Card key={post._id} className="p-2 mb-5 mt-4">
 									<Card.Img src={post.image} />
 
 									<Card.Body>
 										<Card.Title>
 											<Link to={`/post/${post._id}`}>{post.title}</Link>
 										</Card.Title>
-										
 									</Card.Body>
-									<Card.Footer >
-											<h4>{post.likes.length} Likes</h4>
-										</Card.Footer>
+									<Card.Footer>
+										<FcLike className="me-2" />
+										{post.likes.length} Likes
+									</Card.Footer>
 								</Card>
 							))
 						)}

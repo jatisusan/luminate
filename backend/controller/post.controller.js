@@ -17,6 +17,8 @@ const createPost = asyncHandler(async (req, res) => {
 
 // get all posts
 const getPosts = asyncHandler(async (req, res) => {
+	let pageSize = 6;
+	let page = Number(req.query.pageNumber) || 1;
 	let keyword = req.query.keyword;
 	let category = req.query.category;
 	keyword = keyword
@@ -44,9 +46,10 @@ const getPosts = asyncHandler(async (req, res) => {
 			{ path: "author", select: "username email pfp" },
 			{ path: "likes", select: "username email" },
 		]
-	);
+	).limit(pageSize).skip(pageSize * (page - 1));
 	if (!posts) throw new apiError(404, "No posts found!");
-	res.send(posts);
+	let count = await Post.countDocuments(keyword ? { ...keyword } : { category });
+	res.send({posts, page, pages: Math.ceil(count / pageSize)});
 });
 
 const getPostById = asyncHandler(async (req, res) => {

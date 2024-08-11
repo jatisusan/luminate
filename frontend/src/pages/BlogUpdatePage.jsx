@@ -91,11 +91,22 @@ const BlogUpdatePage = () => {
 							<FormGroup className="my-3" controlId="category">
 								<FormLabel>Category</FormLabel>
 								<Form.Control
-									type="text"
+									as="select"
 									value={category}
 									placeholder="Category"
 									onChange={(e) => setCategory(e.target.value)}
-								/>
+								>
+									<option>None</option>
+									<option>Technology</option>
+									<option>Health</option>
+									<option>Programming</option>
+									<option>Entertainment</option>
+									<option>Travel</option>
+									<option>Sports</option>
+									<option>Finance</option>
+									<option>Education</option>
+									<option>Life</option>
+								</Form.Control>
 							</FormGroup>
 
 							<FormGroup className="my-3" controlId="image">
