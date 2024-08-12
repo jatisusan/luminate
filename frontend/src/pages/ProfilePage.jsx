@@ -21,6 +21,9 @@ import { useDeletePostMutation, useGetMyPostsQuery } from "../slices/postSlice";
 import Message from "../components/Message";
 import { FaTrash } from "react-icons/fa";
 import Paginate from "../components/Paginate";
+import Spinner from "react-bootstrap/Spinner"
+import PostLoading from "../components/PostLoading";
+
 
 
 const ProfilePage = () => {
@@ -82,6 +85,7 @@ const ProfilePage = () => {
 	} = useGetMyPostsQuery();
 
 
+
 	const [deletePost, { isLoading: deletePostLoading }] = useDeletePostMutation();
 	const deleteHandler = async (id) => {
 		if (window.confirm("Are you sure you want to delete this post?")) {
@@ -112,7 +116,7 @@ const ProfilePage = () => {
 
 				<Col xs={12} md={3} className="mt-4 ms-3">
 					{mypostsLoading ? (
-						<Message>Loading</Message>
+						<Spinner animation="border" variant="warning" className="mt-2"/>
 					) : mypostsError ? (
 						<Message variant="danger">{mypostsError.data.error}</Message>
 					) : (
@@ -190,7 +194,7 @@ const ProfilePage = () => {
 					<h4>My Posts</h4>
 
 					{mypostsLoading ? (
-						<Message>Loading</Message>
+						<PostLoading num={2}/>
 					) : mypostsError ? (
 						<Message variant="danger">{mypostsError.data.error}</Message>
 					) : myposts.length > 0 ? (

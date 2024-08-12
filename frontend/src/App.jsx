@@ -7,14 +7,15 @@ import Footer from "./components/Footer";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+
 function App() {
 	return (
 		<>
 			<Header />
-			<Container >
+			<Container className="d-flex flex-column min-vh-100">
 				<Outlet />
 			</Container>
-			<Footer />
+			<Footer/>
 			<ToastContainer />
 		</>
 	);

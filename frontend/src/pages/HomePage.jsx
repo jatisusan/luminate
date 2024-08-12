@@ -15,6 +15,9 @@ import Message from "../components/Message";
 import { BsFire } from "react-icons/bs";
 import { FcLike } from "react-icons/fc";
 import Paginate from "../components/Paginate";
+import Spinner from "react-bootstrap/Spinner"
+import PostLoading from "../components/PostLoading";
+
 
 function HomePage() {
 	const { category, keyword, pageNumber } = useParams();
@@ -31,9 +34,7 @@ function HomePage() {
 		error: topPostsError,
 	} = useGetTopPostsQuery();
 
-	return isLoading ? (
-		<h2>Loading....</h2>
-	) : (
+	return  (
 		<>
 			<Row className="mx-4">
 				<Col sm="12" md="6" lg="8">
@@ -46,17 +47,19 @@ function HomePage() {
 							<h3>Latest</h3>
 						)}
 					</Container>
-					{data.posts.length > 0 ? (
+						{
+							isLoading ? <PostLoading num={6}/> : 
+							(data.posts.length > 0 ? (
 						data.posts.map((post) => <Blogs post={post} key={post._id} />)
 					) : (
 						<Message>No posts found</Message>
-					)}
-					<Paginate
+					))}
+					{!isLoading && (<Paginate
 						page={data.page}
 						pages={data.pages}
 						category={category ? category : ""}
 						keyword={keyword ? keyword : ""}
-					/>
+					/>)}
 				</Col>
 
 				<Col>
@@ -94,7 +97,7 @@ function HomePage() {
 						</div>
 
 						{topPostsLoading ? (
-							<Message>Loading....</Message>
+							<Spinner animation="border" variant="warning" className="mt-3 ms-4"/>
 						) : topPostsError ? (
 							<Message>{topPostsError.data.error}</Message>
 						) : (
