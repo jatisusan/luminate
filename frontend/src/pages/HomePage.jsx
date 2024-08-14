@@ -17,6 +17,7 @@ import { FcLike } from "react-icons/fc";
 import Paginate from "../components/Paginate";
 import Spinner from "react-bootstrap/Spinner"
 import PostLoading from "../components/PostLoading";
+import Meta from "../components/Meta";
 
 
 function HomePage() {
@@ -36,6 +37,7 @@ function HomePage() {
 
 	return  (
 		<>
+			<Meta/>
 			<Row className="mx-4">
 				<Col sm="12" md="6" lg="8">
 					<Container className="mt-3 ms-2">

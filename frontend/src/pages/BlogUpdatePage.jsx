@@ -17,6 +17,7 @@ import { useState, useEffect } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useParams, useNavigate } from "react-router-dom";
+import Meta from "../components/Meta";
 
 const BlogUpdatePage = () => {
 	const [title, setTitle] = useState();
@@ -58,20 +59,28 @@ const BlogUpdatePage = () => {
 		setContent(value);
 	};
 
-	const [updatePost, { isLoading: updatePostLoading }] = useUpdatePostMutation();
+	const [updatePost, { isLoading: updatePostLoading }] =
+		useUpdatePostMutation();
 	const submitHandler = async (e) => {
 		e.preventDefault();
-	try {
-		let resp = await updatePost({id, title, content, image, category}).unwrap();
-		toast.success(resp.message);
-		navigate(`/post/${resp.post._id}`);
-	} catch (err) {
-		toast.error(err.data.error);
-	}
+		try {
+			let resp = await updatePost({
+				id,
+				title,
+				content,
+				image,
+				category,
+			}).unwrap();
+			toast.success(resp.message);
+			navigate(`/post/${resp.post._id}`);
+		} catch (err) {
+			toast.error(err.data.error);
+		}
 	};
-	
+
 	return (
 		<>
+			<Meta title="Luminate - Edit Blog" />
 			<Container className="my-3 ">
 				<h2 className="my-4">Edit Blog</h2>
 

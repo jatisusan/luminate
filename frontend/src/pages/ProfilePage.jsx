@@ -23,6 +23,7 @@ import { FaTrash } from "react-icons/fa";
 import Paginate from "../components/Paginate";
 import Spinner from "react-bootstrap/Spinner"
 import PostLoading from "../components/PostLoading";
+import Meta from "../components/Meta";
 
 
 
@@ -100,6 +101,7 @@ const ProfilePage = () => {
 
 	return (
 		<>
+			<Meta title={`Profile - @${userInfo.username}` } />
 			<Row className="d-flex justify-content-center text-center">
 				<Col xs={12} md={3} className="mt-4 ms-3">
 					<Image src={userInfo.pfp} className="profile-pfp" alt="Pfp"/>

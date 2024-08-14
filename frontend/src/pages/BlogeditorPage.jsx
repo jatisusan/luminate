@@ -17,6 +17,7 @@ import {
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import Message from "../components/Message";
+import Meta from "../components/Meta";
 
 const BlogeditorPage = () => {
 	const [title, setTitle] = useState();
@@ -58,6 +59,7 @@ const BlogeditorPage = () => {
 
 	return (
 		<>
+			<Meta title="Luminate - Create Blog"/>
 			<Container className="my-3 ">
 				<Button as={Link} to="/" variant="outline-dark">
 					Go back
