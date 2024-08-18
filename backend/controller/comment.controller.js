@@ -60,5 +60,10 @@ const deleteComment = asyncHandler(async (req, res) => {
 	res.send({ message: "Comment deleted" });
 });
 
+const getAllComments = asyncHandler(async (req, res) => {
+	let comments = await Comment.find({}).populate("author");
+	res.send(comments);
+})
 
-export { addComment, getComments , updateComment, deleteComment};
+
+export { addComment, getComments , updateComment, deleteComment, getAllComments};

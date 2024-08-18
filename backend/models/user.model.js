@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema({
     pfp: {
         type: String,
         default: "https://res.cloudinary.com/dlxajd31e/image/upload/v1723287682/blogplatform/e5yztbupisig6abiqvpb.png"
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false
     }
 }, { timestamps: true });
 

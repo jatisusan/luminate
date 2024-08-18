@@ -27,8 +27,14 @@ const commentSlice = apiSlice.injectEndpoints({
                 body: data
             }),
             invalidatesTags: ['Comment']
+        }),
+
+        getAllComments: builder.query({
+            query: () => ({
+                url: `${COMMENT_URL}/all`
+            })
         })
     })
 });
 
-export const { useGetCommentsQuery, useAddCommentMutation, useAddReplyMutation } = commentSlice;
+export const { useGetCommentsQuery, useAddCommentMutation, useAddReplyMutation, useGetAllCommentsQuery } = commentSlice;

@@ -37,8 +37,9 @@ function HomePage() {
 
 	return  (
 		<>
-			<Meta/>
-			<Row className="mx-4">
+			<Meta />
+			<Container>
+			<Row className="mx-2">
 				<Col sm="12" md="6" lg="8">
 					<Container className="mt-3 ms-2">
 						{keyword ? (
@@ -121,7 +122,8 @@ function HomePage() {
 						)}
 					</Container>
 				</Col>
-			</Row>
+				</Row>
+				</Container>
 		</>
 	);
 }

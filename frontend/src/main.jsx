@@ -18,7 +18,12 @@ import RegisterPage from "./pages/RegisterPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import BlogeditorPage from "./pages/BlogeditorPage.jsx";
 import BlogUpdatePage from "./pages/BlogUpdatePage.jsx";
-import {HelmetProvider } from "react-helmet-async";
+import { HelmetProvider } from "react-helmet-async";
+import Dashboard from "./pages/admin/Dashboard.jsx";
+import AdminRoute from "./components/AdminRoute.jsx";
+import UserListPage from "./pages/admin/UserListPage.jsx";
+import PostListPage from "./pages/admin/PostListPage.jsx";
+import CommentListPage from "./pages/admin/CommentListPage.jsx";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -26,7 +31,10 @@ const router = createBrowserRouter(
 			<Route path="" element={<HomePage />} />
 			<Route path="page/:pageNumber" element={<HomePage />} />
 			<Route path="category/:category" element={<HomePage />} />
-			<Route path="category/:category/page/:pageNumber" element={<HomePage />} />
+			<Route
+				path="category/:category/page/:pageNumber"
+				element={<HomePage />}
+			/>
 			<Route path="search/:keyword" element={<HomePage />} />
 			<Route path="search/:keyword/page/:pageNumber" element={<HomePage />} />
 			<Route path="post/:id" element={<PostPage />} />
@@ -35,6 +43,13 @@ const router = createBrowserRouter(
 			<Route path="profile" element={<ProfilePage />} />
 			<Route path="blogeditor" element={<BlogeditorPage />} />
 			<Route path="post/:id/edit" element={<BlogUpdatePage />} />
+
+			<Route path="" element={<AdminRoute />}>
+				<Route path="/admin/dashboard" element={<Dashboard />} />
+				<Route path="/admin/users" element={<UserListPage />} />
+				<Route path="/admin/posts" element={<PostListPage />} />
+				<Route path="/admin/comments" element={<CommentListPage />} />
+			</Route>
 		</Route>
 	)
 );
@@ -42,7 +57,7 @@ const router = createBrowserRouter(
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<HelmetProvider>
 		<Provider store={store}>
-		<RouterProvider router={router} />
-	</Provider>
+			<RouterProvider router={router} />
+		</Provider>
 	</HelmetProvider>
 );

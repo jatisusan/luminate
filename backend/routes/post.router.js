@@ -3,6 +3,7 @@ import {
 	createPost,
 	deletePost,
 	dislikePost,
+	getAllPosts,
 	getMyPosts,
 	getPostById,
 	getPosts,
@@ -10,7 +11,7 @@ import {
 	likePost,
 	updatePost,
 } from "../controller/post.controller.js";
-import checkAuth from "../middleware/auth.middleware.js";
+import {checkAuth} from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
@@ -19,6 +20,8 @@ router.get("/", getPosts);
 router.get("/myposts", checkAuth, getMyPosts);
 
 router.get("/top-posts", getTopPosts);
+
+router.get("/all", getAllPosts);
 
 router.post("/create", checkAuth, createPost);
 

@@ -1,12 +1,20 @@
-import { Container, Image, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import {
+	Button,
+	Container,
+	Image,
+	Nav,
+	Navbar,
+	NavDropdown,
+} from "react-bootstrap";
 import { FaUser } from "react-icons/fa";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { FaPenNib } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { logout } from "../slices/authSlice";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { useUserLogoutMutation } from "../slices/userApiSlice";
+import { MdSpaceDashboard } from "react-icons/md";
 
 function Header() {
 	const { userInfo } = useSelector((state) => state.auth);
@@ -34,8 +42,8 @@ function Header() {
 						<Image src="/images/logo.jpg" className="brand-logo me-2" />
 						Luminate
 					</NavLink>
-					<Nav>
-						<NavLink to="/login?redirect=/blogeditor" className="nav-link me-4">
+					<Nav className="d-flex align-items-center">
+						<NavLink to="/login?redirect=/blogeditor" className="nav-link me-3">
 							<FaPenNib className="me-1" />
 							Write
 						</NavLink>
@@ -48,6 +56,12 @@ function Header() {
 										Logout
 									</NavDropdown.Item>
 								</NavDropdown>
+
+								{userInfo.isAdmin && (
+									<NavLink to="/admin/dashboard" className="ms-3">
+										<MdSpaceDashboard size={25} style={{ color: "#ffc107" }} />
+									</NavLink>
+								)}
 							</>
 						) : (
 							<>

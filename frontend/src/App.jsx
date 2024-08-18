@@ -12,9 +12,9 @@ function App() {
 	return (
 		<>
 			<Header />
-			<Container className="d-flex flex-column min-vh-100">
+			<div className="d-flex flex-column min-vh-100">
 				<Outlet />
-			</Container>
+			</div>
 			<Footer/>
 			<ToastContainer />
 		</>

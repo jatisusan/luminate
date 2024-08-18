@@ -135,7 +135,7 @@ const BlogUpdatePage = () => {
 								</div>
 							</FormGroup>
 
-							<Button type="submit">Update</Button>
+							<Button type="submit" variant="warning">Update</Button>
 						</Form>
 					</Col>
 				</Row>

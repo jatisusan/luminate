@@ -17,7 +17,8 @@ const signup = asyncHandler(async (req, res) => {
 		user: {
 			username: newUser.username,
 			email: newUser.email,
-			pfp: newUser.pfp
+			pfp: newUser.pfp,
+			isAdmin: newUser.isAdmin
 		},
 	});
 	
@@ -36,6 +37,7 @@ const login = asyncHandler(async (req, res) => {
 				username: user.username,
 				email: user.email,
 				pfp: user.pfp,
+				isAdmin: user.isAdmin
 			},
 		});
 	} else {
@@ -76,4 +78,15 @@ const updateProfile = asyncHandler(async (req, res) => {
 	});
 });
 
-export { signup, login, logout, getProfile, updateProfile };
+const getUsers = asyncHandler(async (req, res) => {
+	let users = await User.find({ isAdmin: false });
+	res.send(users);
+});
+
+const deleteUser = asyncHandler(async (req, res) => {
+	let id = req.params.id;
+	await User.findByIdAndDelete(id);
+	res.send({message: 'User deleted'})
+})
+
+export { signup, login, logout, getProfile, updateProfile, getUsers, deleteUser };

@@ -1,4 +1,4 @@
-import { POST_URL, UPLOAD_URL } from "../constants";
+import { POST_URL, UPLOAD_URL, USER_URL } from "../constants";
 import { apiSlice } from "./apiSlice";
 
 const postSlice = apiSlice.injectEndpoints({
@@ -92,6 +92,13 @@ const postSlice = apiSlice.injectEndpoints({
 			query: () => ({
 				url: `${POST_URL}/top-posts`,
 			})
+		}),
+
+		getAllPosts: builder.query({
+			query: () => ({
+				url: `${POST_URL}/all`
+			}),
+			providesTags: ['Post']
 		})
 	}),
 });
@@ -108,5 +115,6 @@ export const {
 	useCreatePostMutation,
 	useDeletePostMutation,
 	useUpdatePostMutation, 
-	useGetTopPostsQuery
+	useGetTopPostsQuery,
+	useGetAllPostsQuery
 } = postSlice;

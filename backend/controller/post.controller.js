@@ -41,14 +41,14 @@ const getPosts = asyncHandler(async (req, res) => {
 		: category
 		? null
 		: {};
-	let posts = await Post.find(keyword ? { ...keyword } : { category }).populate(
+	let posts = await Post.find(keyword ? { ...keyword } :category? { category } : {}).populate(
 		[
 			{ path: "author", select: "username email pfp" },
 			{ path: "likes", select: "username email" },
 		]
 	).limit(pageSize).skip(pageSize * (page - 1));
 	if (!posts) throw new apiError(404, "No posts found!");
-	let count = await Post.countDocuments(keyword ? { ...keyword } : { category });
+	let count = await Post.countDocuments(keyword ? { ...keyword } :category? { category }: {});
 	res.send({posts, page, pages: Math.ceil(count / pageSize)});
 });
 
@@ -82,12 +82,12 @@ const updatePost = asyncHandler(async (req, res) => {
 	}
 });
 
-// delete my post
+// delete post
 const deletePost = asyncHandler(async (req, res) => {
 	let { postId } = req.params;
 	let post = await Post.findById(postId);
 	if (!post) throw new apiError(404, "Post not found!");
-	if (String(post.author) === String(req.user._id)) {
+	if ((String(post.author) === String(req.user._id)) || req.user.isAdmin) {
 		await Post.findByIdAndDelete(postId);
 		res.send({ message: "Post deleted" });
 	} else {
@@ -145,6 +145,11 @@ const getTopPosts = asyncHandler(async (req, res) => {
 	res.send(posts);
 });
 
+const getAllPosts = asyncHandler(async (req, res) => {
+	let posts = await Post.find({}).populate("author");
+	res.send(posts);
+})
+
 export {
 	createPost,
 	getPosts,
@@ -155,4 +160,5 @@ export {
 	dislikePost,
 	getMyPosts,
 	getTopPosts,
+	getAllPosts
 };
